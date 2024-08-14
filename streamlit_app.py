@@ -2,9 +2,9 @@ import streamlit as st
 from datetime import datetime
 import time
 
-from cognite.client import CogniteClient, ClientConfig, global_config 
-from cognite.client.credentials import OAuthClientCredentials
-from cognite.client.credentials import OAuthInteractive
+from cognite.client import CogniteClient, ClientConfig
+from cognite.client.credentials import Token
+from msal import PublicClientApplication
 
 TENANT_ID = "92bce3bb-abfb-484b-b074-32e1a37f3631"
 CLIENT_ID = "cac76024-22d7-4692-9d51-76b5d52f4c8d"
