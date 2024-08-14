@@ -1,9 +1,65 @@
 import streamlit as st
-from cog_client import client
-
 from datetime import datetime
 import time
-#from cognite.client import CogniteClient
+
+from cognite.client import CogniteClient, ClientConfig, global_config 
+from cognite.client.credentials import OAuthInteractive
+#from cognite.client.credentials import Token
+#from msal import PublicClientApplication
+
+# %% QUANTA DETAILS
+
+TENANT_ID = "92bce3bb-abfb-484b-b074-32e1a37f3631"
+CLIENT_ID = "cac76024-22d7-4692-9d51-76b5d52f4c8d"
+CDF_CLUSTER = "api"  # api, westeurope-1 etc
+COGNITE_PROJECT = "susana"
+#CACHE_FILENAME = COGNITE_PROJECT + ".bin"
+
+BASE_URL = f"https://{CDF_CLUSTER}.cognitedata.com"
+#SCOPES = [f"https://{CDF_CLUSTER}.cognitedata.com/.default"]
+
+#AUTHORITY_HOST_URI = "https://login.microsoftonline.com"
+#AUTHORITY_URI = AUTHORITY_HOST_URI + "/" + TENANT_ID
+# = 53000
+
+oauth_provider = OAuthInteractive.default_for_azure_ad(tenant_id=TENANT_ID, 
+                                                       client_id=CLIENT_ID, 
+                                                       cdf_cluster=CDF_CLUSTER,
+                                                       )
+               
+cnf = ClientConfig(client_name=COGNITE_PROJECT, 
+                   base_url=BASE_URL,
+                   project=COGNITE_PROJECT, 
+                   credentials=oauth_provider)                   
+
+
+global_config.default_client_config = cnf
+client = CogniteClient()
+"""
+def authenticate_azure():
+
+    app = PublicClientApplication(client_id=CLIENT_ID, authority=AUTHORITY_URI)
+
+    # interactive login - make sure you have http://localhost:port in Redirect URI in App Registration as type "Mobile and desktop applications"
+    creds = app.acquire_token_interactive(scopes=SCOPES, port=PORT)
+    return creds
+
+
+creds = authenticate_azure()
+
+# def get_client():
+#     client = CogniteClient(
+#         project=COGNITE_PROJECT,
+#         base_url=f"https://{CDF_CLUSTER}.cognitedata.com",
+#         client_name="cognite-python-dev",
+#         debug=False
+#     )
+#     return client
+
+
+cnf = ClientConfig(client_name="my-special-client", project=COGNITE_PROJECT, credentials=Token(creds["access_token"]), base_url=BASE_URL)
+client = CogniteClient(cnf)
+
 st.title("BALLER TIL BALLEÅBNER")
 #client = CogniteClient()
 
