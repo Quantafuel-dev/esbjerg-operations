@@ -4,7 +4,36 @@ import time
 
 from cognite.client import CogniteClient, ClientConfig, global_config 
 from cognite.client.credentials import OAuthClientCredentials
+from cognite.client.credentials import OAuthInteractive
 
+TENANT_ID = "92bce3bb-abfb-484b-b074-32e1a37f3631"
+CLIENT_ID = "cac76024-22d7-4692-9d51-76b5d52f4c8d"
+CDF_CLUSTER = "api"  # api, westeurope-1 etc
+COGNITE_PROJECT = "susana"
+#CACHE_FILENAME = COGNITE_PROJECT + ".bin"
+
+BASE_URL = f"https://{CDF_CLUSTER}.cognitedata.com"
+#SCOPES = [f"https://{CDF_CLUSTER}.cognitedata.com/.default"]
+
+#AUTHORITY_HOST_URI = "https://login.microsoftonline.com"
+#AUTHORITY_URI = AUTHORITY_HOST_URI + "/" + TENANT_ID
+# = 53000
+
+oauth_provider = OAuthInteractive.default_for_azure_ad(tenant_id=TENANT_ID, 
+                                                       client_id=CLIENT_ID, 
+                                                       cdf_cluster=CDF_CLUSTER,
+                                                       )
+               
+cnf = ClientConfig(client_name=COGNITE_PROJECT, 
+                   base_url=BASE_URL,
+                   project=COGNITE_PROJECT, 
+                   credentials=oauth_provider)                   
+
+
+global_config.default_client_config = cnf
+client = CogniteClient()
+
+"""
 client_id = "d9b6431d-fe9a-4a39-8f47-12ebceec15d7"
 client_secret = st.secrets["CLIENT_SECRET"]
 tenant_id = "92bce3bb-abfb-484b-b074-32e1a37f3631"
@@ -20,6 +49,7 @@ oauth = OAuthClientCredentials(
 cnf = CogniteClient(client_name="susana", base_url=cluster, project="susana", credentials=oauth)
 global_config.default_client_config = cnf
 client = CogniteClient()
+"""
 
 st.title("BALLER TIL BALLEÅBNER")
 
