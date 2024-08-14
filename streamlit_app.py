@@ -6,7 +6,7 @@ from cognite.client import CogniteClient
 from cognite.client.credentials import OAuthClientCredentials
 
 client_id = "d9b6431d-fe9a-4a39-8f47-12ebceec15d7"
-client_secret = CLIENT_SECRET
+client_secret = st.secrets["CLIENT_SECRET"]
 tenant_id = "92bce3bb-abfb-484b-b074-32e1a37f3631"
 cluster = "https://api.cognitedata.com"
 
