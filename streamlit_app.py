@@ -78,7 +78,7 @@ with row4[1]:
                         "Marius_Pedersen_Industriaffald","MP_Nomi", "Renovest"]
             cust_list.pop(cust_list.index(option))
 
-            for i in cust_list:
+            # for i in cust_list:
                 # client.time_series.data.insert([(datetime.now(), 0)], external_id="esbjerg_" + i + "_infeed_status")
             st.write(f"Kunde {option} valgt")    
         else:
