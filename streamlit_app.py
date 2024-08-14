@@ -13,25 +13,35 @@ COGNITE_PROJECT = "susana"
 #CACHE_FILENAME = COGNITE_PROJECT + ".bin"
 
 BASE_URL = f"https://{CDF_CLUSTER}.cognitedata.com"
-#SCOPES = [f"https://{CDF_CLUSTER}.cognitedata.com/.default"]
+SCOPES = [f"https://{CDF_CLUSTER}.cognitedata.com/.default"]
 
-#AUTHORITY_HOST_URI = "https://login.microsoftonline.com"
-#AUTHORITY_URI = AUTHORITY_HOST_URI + "/" + TENANT_ID
-# = 53000
+AUTHORITY_HOST_URI = "https://login.microsoftonline.com"
+AUTHORITY_URI = AUTHORITY_HOST_URI + "/" + TENANT_ID
+PORT = 53000
 
-oauth_provider = OAuthInteractive.default_for_azure_ad(tenant_id=TENANT_ID, 
-                                                       client_id=CLIENT_ID, 
-                                                       cdf_cluster=CDF_CLUSTER,
-                                                       )
-               
-cnf = ClientConfig(client_name=COGNITE_PROJECT, 
-                   base_url=BASE_URL,
-                   project=COGNITE_PROJECT, 
-                   credentials=oauth_provider)                   
+def authenticate_azure():
+
+    app = PublicClientApplication(client_id=CLIENT_ID, authority=AUTHORITY_URI)
+
+    # interactive login - make sure you have http://localhost:port in Redirect URI in App Registration as type "Mobile and desktop applications"
+    creds = app.acquire_token_interactive(scopes=SCOPES, port=PORT)
+    return creds
 
 
-global_config.default_client_config = cnf
-client = CogniteClient()
+creds = authenticate_azure()
+
+# def get_client():
+#     client = CogniteClient(
+#         project=COGNITE_PROJECT,
+#         base_url=f"https://{CDF_CLUSTER}.cognitedata.com",
+#         client_name="cognite-python-dev",
+#         debug=False
+#     )
+#     return client
+
+
+cnf = ClientConfig(client_name="my-special-client", project=COGNITE_PROJECT, credentials=Token(creds["access_token"]), base_url=BASE_URL)
+client = CogniteClient(cnf)
 
 st.title("BALLER TIL BALLEÅBNER")
 
