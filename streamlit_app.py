@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 import time
 
-from cognite.client import CogniteClient
+from cognite.client import CogniteClient, ClientConfig, global_config 
 from cognite.client.credentials import OAuthClientCredentials
 
 client_id = "d9b6431d-fe9a-4a39-8f47-12ebceec15d7"
@@ -17,7 +17,9 @@ oauth = OAuthClientCredentials(
     scopes=["https://api.cognitedata.com/.default"],
 )
 
-cdf_client = CogniteClient(client_name="my-streamlit-app", token=oauth, base_url=cluster)
+cnf = CogniteClient(client_name="susana", base_url=cluster, project="susana", credentials=oauth)
+global_config.default_client_config = cnf
+client = CogniteClient()
 
 st.title("BALLER TIL BALLEÅBNER")
 
