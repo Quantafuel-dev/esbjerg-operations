@@ -2,30 +2,6 @@ import streamlit as st
 from datetime import datetime
 import time
 
-from cognite.client import CogniteClient, ClientConfig, global_config 
-from cognite.client.credentials import OAuthClientCredentials
-
-
-# %% QUANTA DETAILS
-
-TENANT_ID = "92bce3bb-abfb-484b-b074-32e1a37f3631"
-CLIENT_ID = "d9b6431d-fe9a-4a39-8f47-12ebceec15d7"
-CLIENT_SECRET = "CLIENT_SECRET"
-
-COGNITE_PROJECT = "susana"
-#CACHE_FILENAME = COGNITE_PROJECT + ".bin"
-client_id = CLIENT_ID
-client_secret = CLIENT_SECRET
-tenant_id = TENANT_ID
-
-oauth = OAuthClientCredentials(
-    token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
-    client_id=client_id,
-    client_secret=client_secret,
-    scopes=["https://api.cognitedata.com/.default"],
-)
-
-client = CogniteClient(client_name="my-streamlit-app", token=oauth, base_url="https://api.cognitedata.com")
 
 st.title("BALLER TIL BALLEÅBNER")
 
@@ -73,9 +49,9 @@ cust_list = ["AFLD", "DKK_Lager", "DKK_Norfors", "DKK_SamAqua",
 
 customer_array = []
 
-for i in cust_list:
-    customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
-active_customer = cust_list[customer_array.index(1)]
+# for i in cust_list:
+#     customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
+# active_customer = cust_list[customer_array.index(1)]
 
 
 row0 = st.columns([1,1])
@@ -96,14 +72,14 @@ with row4[1]:
             xid = "esbjerg_" + option + "_infeed_status"
             ts_name = "Esbjerg " + option + " infeed status"
             
-            client.time_series.data.insert([(datetime.now(), 1)], external_id=xid)
+            # client.time_series.data.insert([(datetime.now(), 1)], external_id=xid)
             cust_list = ["AFLD", "DKK_Lager", "DKK_Norfors", "DKK_SamAqua",
                         "DKK_Vejle", "Horsens", "L&T", "Marius_Pedersen",
                         "Marius_Pedersen_Industriaffald","MP_Nomi", "Renovest"]
             cust_list.pop(cust_list.index(option))
 
             for i in cust_list:
-                client.time_series.data.insert([(datetime.now(), 0)], external_id="esbjerg_" + i + "_infeed_status")
+                # client.time_series.data.insert([(datetime.now(), 0)], external_id="esbjerg_" + i + "_infeed_status")
             st.write(f"Kunde {option} valgt")    
         else:
             st.write("Kunde er allerede valgt")
@@ -112,8 +88,8 @@ cust_list = ["AFLD", "DKK_Lager", "DKK_Norfors", "DKK_SamAqua",
             "DKK_Vejle", "Horsens", "L&T", "Marius_Pedersen",
             "Marius_Pedersen_Industriaffald","MP_Nomi", "Renovest"]
 customer_array = []
-for i in cust_list:
-    customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
+# for i in cust_list:
+    # customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
 active_customer = cust_list[customer_array.index(1)]            
 
 with row0[0]:
