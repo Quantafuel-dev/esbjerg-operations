@@ -59,9 +59,9 @@ creds = authenticate_azure()
 
 cnf = ClientConfig(client_name="my-special-client", project=COGNITE_PROJECT, credentials=Token(creds["access_token"]), base_url=BASE_URL)
 client = CogniteClient(cnf)
-
+"""
 st.title("BALLER TIL BALLEÅBNER")
-#client = CogniteClient()
+
 
 st.markdown("""
     <style>
