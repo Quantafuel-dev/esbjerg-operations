@@ -11,7 +11,7 @@ CLIENT_ID = "cac76024-22d7-4692-9d51-76b5d52f4c8d"
 CDF_CLUSTER = "api"  # api, westeurope-1 etc
 COGNITE_PROJECT = "susana"
 #CACHE_FILENAME = COGNITE_PROJECT + ".bin"
-
+"""
 BASE_URL = f"https://{CDF_CLUSTER}.cognitedata.com"
 SCOPES = [f"https://{CDF_CLUSTER}.cognitedata.com/.default"]
 
@@ -42,7 +42,7 @@ creds = authenticate_azure()
 
 cnf = ClientConfig(client_name="my-special-client", project=COGNITE_PROJECT, credentials=Token(creds["access_token"]), base_url=BASE_URL)
 client = CogniteClient(cnf)
-
+"""
 st.title("BALLER TIL BALLEÅBNER")
 
 
@@ -89,8 +89,8 @@ cust_list = ["AFLD", "DKK_Lager", "DKK_Norfors", "DKK_SamAqua",
 
 customer_array = []
 
-for i in cust_list:
-  customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
+#cfor i in cust_list:
+#  customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
 active_customer = cust_list[customer_array.index(1)]
 
 
@@ -112,14 +112,14 @@ with row4[1]:
             xid = "esbjerg_" + option + "_infeed_status"
             ts_name = "Esbjerg " + option + " infeed status"
             
-            client.time_series.data.insert([(datetime.now(), 1)], external_id=xid)
+            # client.time_series.data.insert([(datetime.now(), 1)], external_id=xid)
             cust_list = ["AFLD", "DKK_Lager", "DKK_Norfors", "DKK_SamAqua",
                         "DKK_Vejle", "Horsens", "L&T", "Marius_Pedersen",
                         "Marius_Pedersen_Industriaffald","MP_Nomi", "Renovest"]
             cust_list.pop(cust_list.index(option))
 
-            for i in cust_list:
-                client.time_series.data.insert([(datetime.now(), 0)], external_id="esbjerg_" + i + "_infeed_status")
+            # for i in cust_list:
+            #    client.time_series.data.insert([(datetime.now(), 0)], external_id="esbjerg_" + i + "_infeed_status")
             st.write(f"Kunde {option} valgt")    
         else:
             st.write("Kunde er allerede valgt")
@@ -128,8 +128,8 @@ cust_list = ["AFLD", "DKK_Lager", "DKK_Norfors", "DKK_SamAqua",
             "DKK_Vejle", "Horsens", "L&T", "Marius_Pedersen",
             "Marius_Pedersen_Industriaffald","MP_Nomi", "Renovest"]
 customer_array = []
-for i in cust_list:
-    customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
+# for i in cust_list:
+    # customer_array.append(client.time_series.data.retrieve_latest(external_id="esbjerg_" + i + "_infeed_status").to_pandas().iloc[0, 0])
 active_customer = cust_list[customer_array.index(1)]            
 
 with row0[0]:
